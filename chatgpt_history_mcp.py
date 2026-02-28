@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Optional
 
 from mcp.server.fastmcp import FastMCP
+from mcp.types import Icon
 from pydantic import BaseModel, Field, ConfigDict
 
 
@@ -331,12 +332,13 @@ def _init_from_path(export_path: str):
 
 # Initialize the FastMCP server
 mcp = FastMCP(
-    "chatgpt_history_mcp",
+    "ChatGPT History",
     instructions=(
         "This server provides access to the user's ChatGPT conversation history. "
         "Use it to search past conversations, retrieve full conversation content, "
         "and get statistics about the user's ChatGPT usage."
     ),
+    icons=[Icon(src="https://chatgpt.com/apple-touch-icon.png", mimeType="image/png")],
 )
 
 
