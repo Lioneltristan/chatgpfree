@@ -13,7 +13,7 @@ from tkinter import filedialog, messagebox
 
 REPO = "git+https://github.com/Lioneltristan/chatgpfree"
 PACKAGE = "chatgpt-history-mcp"
-SERVER_NAME = "chatgpt-history"
+SERVER_NAME = "ChatGPT history"
 CLAUDE_DIR = Path.home() / "Library" / "Application Support" / "Claude"
 CONFIG_PATH = CLAUDE_DIR / "claude_desktop_config.json"
 HISTORY_DIR = CLAUDE_DIR / "chatgpt-history"

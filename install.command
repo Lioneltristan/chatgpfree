@@ -6,7 +6,7 @@ set -e
 
 REPO="git+https://github.com/Lioneltristan/chatgpfree"
 PACKAGE="chatgpt-history-mcp"
-SERVER_NAME="ChatGPT History"
+SERVER_NAME="ChatGPT history"
 CLAUDE_DIR="$HOME/Library/Application Support/Claude"
 HISTORY_DIR="$CLAUDE_DIR/chatgpt-history"
 CONFIG_PATH="$CLAUDE_DIR/claude_desktop_config.json"

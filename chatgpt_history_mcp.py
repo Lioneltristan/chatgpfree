@@ -332,7 +332,7 @@ def _init_from_path(export_path: str):
 
 # Initialize the FastMCP server
 mcp = FastMCP(
-    "ChatGPT History",
+    "ChatGPT history",
     instructions=(
         "This server provides access to the user's ChatGPT conversation history. "
         "Use it to search past conversations, retrieve full conversation content, "

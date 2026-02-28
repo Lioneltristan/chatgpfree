@@ -30,9 +30,9 @@ dependencies = [
 chatgpt-history-mcp = "chatgpt_history_mcp:main"
 
 [project.urls]
-Homepage = "https://github.com/YOUR_USERNAME/chatgpt-history-mcp"
-Repository = "https://github.com/YOUR_USERNAME/chatgpt-history-mcp"
-Issues = "https://github.com/YOUR_USERNAME/chatgpt-history-mcp/issues"
+Homepage = "https://lionelmorlot.com/chatgpfree"
+Repository = "https://github.com/Lioneltristan/chatgpfree"
+Issues = "https://github.com/Lioneltristan/chatgpfree/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["."]

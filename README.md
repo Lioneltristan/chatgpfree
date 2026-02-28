@@ -1,8 +1,8 @@
-# 🔄 ChatGPT History MCP Server
+# ChatGPT history for Claude
 
-**Make your ChatGPT conversations searchable from Claude.**
+**Search your past ChatGPT conversations directly from Claude Desktop.**
 
-Switching from ChatGPT to Claude? Don't leave your conversation history behind. This MCP server lets Claude search through all your past ChatGPT conversations — so you can ask things like *"What did I discuss about marketing strategy in ChatGPT?"* and get real answers.
+Switched from ChatGPT to Claude? Now you can ask Claude things like *"What did I discuss about marketing strategy in ChatGPT?"* and get real answers — without going back to ChatGPT.
 
 ![MCP](https://img.shields.io/badge/MCP-Compatible-blue)
 ![Python](https://img.shields.io/badge/Python-3.10+-green)
@@ -10,136 +10,79 @@ Switching from ChatGPT to Claude? Don't leave your conversation history behind. 
 
 ---
 
-## ⚡ Quick Start (5 minutes)
+## Install (macOS)
 
-### Step 1: Export your ChatGPT data
+**Step 1 — Export your ChatGPT data**
 
-1. Go to [chatgpt.com](https://chatgpt.com)
-2. Click your profile → **Settings** → **Data Controls** → **Export Data**
-3. Click **Confirm Export**
-4. Wait for the email (usually 5–30 minutes)
-5. Download the ZIP file and save it somewhere, e.g. `~/Downloads/chatgpt-export.zip`
+In ChatGPT: Settings → Data Controls → Export Data. You'll get an email with a `.zip` file.
 
-### Step 2: Add to Claude Desktop
+**Step 2 — Run the installer**
 
-Open your Claude Desktop config file:
+Open Terminal (⌘ Space → type "Terminal") and paste:
 
-| OS | Config file location |
-|----|---------------------|
-| **Mac** | `~/Library/Application Support/Claude/claude_desktop_config.json` |
-| **Windows** | `%APPDATA%\Claude\claude_desktop_config.json` |
-| **Linux** | `~/.config/Claude/claude_desktop_config.json` |
+```bash
+curl -fsSL https://raw.githubusercontent.com/Lioneltristan/chatgpfree/main/install.command | bash
+```
 
-Add the following to your config (create the file if it doesn't exist):
+Select your export file when prompted. Claude Desktop restarts automatically.
+
+**Step 3 — Search**
+
+Ask Claude anything:
+- *"Search my ChatGPT history for Python debugging"*
+- *"What did I discuss about marketing in ChatGPT?"*
+- *"Show me my ChatGPT conversations from January 2024"*
+
+---
+
+## What it does
+
+| Tool | Description |
+|------|-------------|
+| `chatgpt_search` | Full-text search across all conversations with optional date filters |
+| `chatgpt_get_conversation` | Retrieve the full content of any conversation by ID |
+| `chatgpt_list_conversations` | Browse conversations by date with pagination |
+| `chatgpt_stats` | Usage overview: total conversations, messages, monthly activity |
+
+---
+
+## Privacy
+
+Everything runs locally on your machine. Your conversations are never uploaded anywhere.
+
+- No API keys required
+- No external network calls
+- Open source — read every line of code
+
+---
+
+## How it works
+
+Your ChatGPT export is parsed and indexed in memory using TF-IDF when Claude Desktop starts. When you ask Claude to search your history, it calls the local MCP server which responds instantly from the in-memory index.
+
+---
+
+## Requirements
+
+- macOS
+- Python 3.10+
+- [Claude Desktop](https://claude.ai/download)
+
+---
+
+## Manual setup (advanced)
+
+If you prefer to configure manually, add this to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 
 ```json
 {
   "mcpServers": {
-    "chatgpt-history": {
+    "ChatGPT history": {
       "command": "uvx",
       "args": [
+        "--from", "git+https://github.com/Lioneltristan/chatgpfree",
         "chatgpt-history-mcp",
-        "--export-path",
-        "/FULL/PATH/TO/YOUR/chatgpt-export.zip"
-      ]
-    }
-  }
-}
-```
-
-> ⚠️ Replace `/FULL/PATH/TO/YOUR/chatgpt-export.zip` with the actual path to your downloaded file.
-
-### Step 3: Restart Claude Desktop
-
-Close and reopen Claude Desktop. You should see a 🔧 icon in the bottom-left of the chat indicating MCP tools are available.
-
-### Step 4: Start asking!
-
-Try these in Claude:
-
-- *"Search my ChatGPT history for discussions about Python"*
-- *"What did I talk about with ChatGPT regarding marketing?"*
-- *"Show me my ChatGPT usage statistics"*
-- *"Find ChatGPT conversations from January 2024"*
-
----
-
-## 🛠 What You Can Do
-
-| Command | What it does |
-|---------|-------------|
-| **Search** | Find conversations by topic, keyword, or phrase |
-| **Read** | Retrieve the full content of any conversation |
-| **Browse** | List conversations by date |
-| **Stats** | See your ChatGPT usage overview: total conversations, messages, models used, monthly activity |
-
-Claude has access to four tools:
-
-- `chatgpt_search` — Keyword search with TF-IDF ranking and date filters
-- `chatgpt_get_conversation` — Retrieve full conversation content by ID
-- `chatgpt_list_conversations` — Browse conversations with pagination
-- `chatgpt_stats` — Usage statistics and activity overview
-
----
-
-## 🔒 Privacy & Security
-
-Your data stays **100% local**:
-
-- ✅ The export file is read locally — nothing is uploaded anywhere
-- ✅ No API keys needed — the search runs entirely on your machine
-- ✅ No external calls — the server never contacts any remote service
-- ✅ Open source — you can read every line of code
-
-The server only reads your export file when it starts up and builds an in-memory search index. When Claude asks to search your history, it calls the local MCP server which runs on your machine.
-
----
-
-## 📋 Requirements
-
-- **Python 3.10+** (check with `python3 --version`)
-- **Claude Desktop** (with MCP support)
-- **A ChatGPT data export** (ZIP file from OpenAI)
-
-If you don't have Python installed, the easiest way:
-- **Mac**: `brew install python`
-- **Windows**: Download from [python.org](https://www.python.org/downloads/)
-- **Linux**: `sudo apt install python3 python3-pip`
-
-If you don't have `uvx`:
-```bash
-pip install uv
-```
-
----
-
-## 🔧 Alternative: Install from Source
-
-If you prefer not to use `uvx`:
-
-```bash
-# Clone the repo
-git clone https://github.com/YOUR_USERNAME/chatgpt-history-mcp.git
-cd chatgpt-history-mcp
-
-# Install
-pip install .
-
-# Run directly
-chatgpt-history-mcp --export-path ~/Downloads/chatgpt-export.zip
-```
-
-Or use the Claude Desktop config with `python` directly:
-
-```json
-{
-  "mcpServers": {
-    "chatgpt-history": {
-      "command": "python",
-      "args": [
-        "/FULL/PATH/TO/chatgpt_history_mcp.py",
-        "--export-path",
-        "/FULL/PATH/TO/YOUR/chatgpt-export.zip"
+        "--export-path", "/path/to/conversations.json"
       ]
     }
   }
@@ -148,82 +91,22 @@ Or use the Claude Desktop config with `python` directly:
 
 ---
 
-## 🤔 How It Works
+## Troubleshooting
 
-```
-┌──────────────┐     ┌─────────────────┐     ┌──────────────────┐
-│  ChatGPT     │     │  MCP Server     │     │  Claude Desktop  │
-│  Export ZIP   │────▶│  (local Python) │◀───▶│                  │
-│              │     │                 │     │  "What did I     │
-│ conversations│     │ • Parse JSON    │     │   discuss about  │
-│    .json     │     │ • Build index   │     │   marketing?"    │
-└──────────────┘     │ • Search (TF-IDF│     └──────────────────┘
-                     │ • Serve results │
-                     └─────────────────┘
-                        Runs on YOUR machine
-                        No data leaves your computer
-```
+**No conversations showing up**
+Make sure your export file path is correct. The installer copies it to `~/Library/Application Support/Claude/chatgpt-history/conversations.json`.
 
-1. **On startup**: The server reads your ChatGPT export, parses the conversation tree structure, and builds a TF-IDF search index in memory.
-2. **When Claude asks**: Claude calls the MCP tools (search, get, list, stats), the server responds with relevant conversations.
-3. **Everything is local**: The server runs as a subprocess of Claude Desktop. No network calls, no cloud, no API keys.
+**Claude Desktop not picking up the server**
+Restart Claude Desktop after running the installer. Check that the config file is valid JSON.
 
 ---
 
-## 🐛 Troubleshooting
+## Roadmap
 
-**"No conversations loaded"**
-- Check that the file path in your config is correct and absolute
-- Make sure the ZIP file contains `conversations.json`
-
-**Claude doesn't show the 🔧 icon**
-- Make sure you restarted Claude Desktop after editing the config
-- Check the config JSON is valid (no trailing commas!)
-- Check Claude Desktop logs for errors
-
-**"uvx not found"**
-- Install uv first: `pip install uv`
-- Or use the direct Python method in the Alternative section
-
-**Slow startup with huge exports**
-- If you have 10,000+ conversations, the initial indexing may take a few seconds
-- After that, searches are instant
+- [ ] Publish to PyPI for `uvx chatgpt-history-mcp` (no `--from` needed)
+- [ ] Semantic search with local embeddings
+- [ ] Support for other AI chat exports (Gemini, Copilot)
 
 ---
 
-## 💡 Tips
-
-- **Be specific in your searches**: "Python async debugging" works better than just "Python"
-- **Use date filters**: Narrow down results with `date_from` and `date_to`
-- **Ask Claude to summarize**: After finding a conversation, ask Claude to summarize the key takeaways
-- **Compare approaches**: Ask Claude "How did I solve X in ChatGPT? How would you approach it differently?"
-
----
-
-## 🗺 Roadmap
-
-- [ ] Publish to PyPI for one-command install via `uvx`
-- [ ] Support for ChatGPT shared links import
-- [ ] Optional semantic search (with local embeddings)
-- [ ] Web UI for browsing history without Claude
-- [ ] Support for other AI chat exports (Gemini, Copilot, etc.)
-
----
-
-## 📄 License
-
-MIT — do whatever you want with it.
-
----
-
-## 🤝 Contributing
-
-PRs welcome! Some ideas:
-- Better search ranking algorithms
-- Support for more export formats
-- Performance optimizations for very large exports
-- Tests!
-
----
-
-**Made with ☕ by Lionel Morlot** — *Because your AI conversations shouldn't be locked in silos.*
+MIT — [lionelmorlot.com/chatgpfree](https://lionelmorlot.com/chatgpfree)
