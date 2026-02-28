@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "chatgpt-history-mcp"
+version = "0.1.0"
+description = "MCP server that makes your ChatGPT conversation history searchable from Claude"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+keywords = ["mcp", "chatgpt", "claude", "ai", "llm", "history", "search"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "mcp[cli]>=1.0.0",
+    "pydantic>=2.0.0",
+]
+
+[project.scripts]
+chatgpt-history-mcp = "chatgpt_history_mcp:main"
+
+[project.urls]
+Homepage = "https://github.com/YOUR_USERNAME/chatgpt-history-mcp"
+Repository = "https://github.com/YOUR_USERNAME/chatgpt-history-mcp"
+Issues = "https://github.com/YOUR_USERNAME/chatgpt-history-mcp/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
