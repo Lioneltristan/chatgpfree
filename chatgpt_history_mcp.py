@@ -101,10 +101,20 @@ def parse_chatgpt_export(export_path: str) -> list[Conversation]:
 
     if path.suffix == ".zip":
         with zipfile.ZipFile(path, "r") as zf:
-            for name in zf.namelist():
-                if name.endswith("conversations.json"):
-                    raw_json = json.loads(zf.read(name))
-                    break
+            names = zf.namelist()
+            # New format: conversations split across conversations-000.json, -001.json, etc.
+            parts = sorted(n for n in names if re.match(r"conversations-\d+\.json", n))
+            if parts:
+                raw_json = []
+                for name in parts:
+                    chunk = json.loads(zf.read(name))
+                    raw_json.extend(entry for entry in chunk if entry)
+            else:
+                # Old format: single conversations.json
+                for name in names:
+                    if name == "conversations.json":
+                        raw_json = json.loads(zf.read(name))
+                        break
         if raw_json is None:
             raise FileNotFoundError("No conversations.json found in the ZIP file.")
     elif path.suffix == ".json":
