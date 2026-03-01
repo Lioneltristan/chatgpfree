@@ -99,7 +99,12 @@ def parse_chatgpt_export(export_path: str) -> list[Conversation]:
     path = Path(export_path)
     raw_json = None
 
-    if path.suffix == ".zip":
+    # Detect ZIP by magic bytes (PK\x03\x04) so a misnamed file still works.
+    with open(path, "rb") as _f:
+        _magic = _f.read(4)
+    is_zip = _magic[:2] == b"PK"
+
+    if is_zip:
         with zipfile.ZipFile(path, "r") as zf:
             names = zf.namelist()
             # New format: conversations split across conversations-000.json, -001.json, etc.
@@ -117,10 +122,8 @@ def parse_chatgpt_export(export_path: str) -> list[Conversation]:
                         break
         if raw_json is None:
             raise FileNotFoundError("No conversations.json found in the ZIP file.")
-    elif path.suffix == ".json":
-        raw_json = json.loads(path.read_text(encoding="utf-8"))
     else:
-        raise ValueError(f"Unsupported file format: {path.suffix}. Use .zip or .json")
+        raw_json = json.loads(path.read_text(encoding="utf-8"))
 
     conversations: list[Conversation] = []
 
