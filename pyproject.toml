@@ -8,6 +8,9 @@ version = "0.1.0"
 description = "MCP server that makes your ChatGPT conversation history searchable from Claude"
 readme = "README.md"
 license = { text = "MIT" }
+authors = [
+    { name = "Lionel Morlot", email = "lionel@lionelmorlot.com" },
+]
 requires-python = ">=3.10"
 keywords = ["mcp", "chatgpt", "claude", "ai", "llm", "history", "search"]
 classifiers = [

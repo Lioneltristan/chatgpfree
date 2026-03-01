@@ -16,5 +16,3 @@ build/
 .vscode/
 .DS_Store
 *.spec
-build/
-dist/
