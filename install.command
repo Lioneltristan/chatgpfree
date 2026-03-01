@@ -67,8 +67,9 @@ echo "Found uvx: $UVX"
 # ── Step 4: copy export to stable location ───────────────────────────────────
 echo "Copying export file…"
 mkdir -p "$HISTORY_DIR"
-cp "$EXPORT_PATH" "$HISTORY_DIR/conversations.json"
-STORED_PATH="$HISTORY_DIR/conversations.json"
+EXT="${EXPORT_PATH##*.}"
+cp "$EXPORT_PATH" "$HISTORY_DIR/conversations.$EXT"
+STORED_PATH="$HISTORY_DIR/conversations.$EXT"
 echo "Saved to: $STORED_PATH"
 
 # ── Step 5: write Claude Desktop config ──────────────────────────────────────
