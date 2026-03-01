@@ -76,10 +76,17 @@ echo "Updating Claude Desktop config…"
 mkdir -p "$CLAUDE_DIR"
 
 # Merge into existing config with Python (ships with macOS)
-python3 - <<PYEOF
-import json, pathlib
+# Pass values via environment variables so no bash interpolation happens inside Python source.
+export _CGH_CONFIG_PATH="$CONFIG_PATH"
+export _CGH_SERVER_NAME="$SERVER_NAME"
+export _CGH_UVX="$UVX"
+export _CGH_REPO="$REPO"
+export _CGH_PACKAGE="$PACKAGE"
+export _CGH_STORED_PATH="$STORED_PATH"
+python3 - <<'PYEOF'
+import json, os, pathlib
 
-config_path = pathlib.Path("$CONFIG_PATH")
+config_path = pathlib.Path(os.environ["_CGH_CONFIG_PATH"])
 config = {}
 if config_path.exists():
     try:
@@ -87,9 +94,9 @@ if config_path.exists():
     except Exception:
         pass
 
-config.setdefault("mcpServers", {})["$SERVER_NAME"] = {
-    "command": "$UVX",
-    "args": ["--from", "$REPO", "$PACKAGE", "--export-path", "$STORED_PATH"],
+config.setdefault("mcpServers", {})[os.environ["_CGH_SERVER_NAME"]] = {
+    "command": os.environ["_CGH_UVX"],
+    "args": ["--from", os.environ["_CGH_REPO"], os.environ["_CGH_PACKAGE"], "--export-path", os.environ["_CGH_STORED_PATH"]],
 }
 
 config_path.write_text(json.dumps(config, indent=2))
