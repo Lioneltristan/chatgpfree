@@ -338,7 +338,7 @@ mcp = FastMCP(
         "Use it to search past conversations, retrieve full conversation content, "
         "and get statistics about the user's ChatGPT usage."
     ),
-    icons=[Icon(src="https://chatgpt.com/apple-touch-icon.png", mimeType="image/png")],
+    icons=[Icon(src="https://raw.githubusercontent.com/Lioneltristan/chatgpfree/main/icon.png", mimeType="image/png")],
 )
 
 
