@@ -9,7 +9,7 @@ description = "MCP server that makes your ChatGPT conversation history searchabl
 readme = "README.md"
 license = { text = "MIT" }
 authors = [
-    { name = "Lionel Morlot", email = "hi@lionelmorlot.com" },
+    { name = "Lionel Morlot", email = "hi+chatgpfree@lionelmorlot.com" },
 ]
 requires-python = ">=3.10"
 keywords = ["mcp", "chatgpt", "claude", "ai", "llm", "history", "search"]
